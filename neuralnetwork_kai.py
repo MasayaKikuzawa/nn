@@ -16,6 +16,7 @@ class Neural:
     # constructor
     def __init__(self, n_input, n_hidden, n_output):
         self.hidden_weight = numpy.random.random_sample((n_hidden, n_input + 1))
+        self.middle_weight = numpy.random.random_sample((n_hidden, n_hidden + 1))
         self.output_weight = numpy.random.random_sample((n_output, n_hidden + 1))
 
 
@@ -38,7 +39,7 @@ class Neural:
         Y = [0]*N
         for i in range(N):
             x = X[i, :]
-            z, y = self.__forward(x)
+            z, y, a = self.__forward(x)
 
             Y[i] = y
             
@@ -59,20 +60,26 @@ class Neural:
     def __forward(self, x):
         # z: output in hidden layer, y: output in output layer
         z = self.__sigmoid(self.hidden_weight.dot(numpy.r_[numpy.array([1]), x]))
-        y = self.__sigmoid(self.output_weight.dot(numpy.r_[numpy.array([1]), z]))
+        a = self.__sigmoid(self.middle_weight.dot(numpy.r_[numpy.array([1]), z]))
+        y = self.__sigmoid(self.output_weight.dot(numpy.r_[numpy.array([1]), a]))
 
-        return (z, y)
+        return (z, y, a)
 
     def __update_weight(self, x, t, epsilon):
-        z, y = self.__forward(x)
+        z, y, a = self.__forward(x)
 
         # update output_weight
         output_delta = (y - t) * y * (1.0 - y)
         _output_weight = self.output_weight
-        self.output_weight -= epsilon * output_delta.reshape((-1, 1)) * numpy.r_[numpy.array([1]), z]
+        self.output_weight -= epsilon * output_delta.reshape((-1, 1)) * numpy.r_[numpy.array([1]), a]
+
+        middle_delta = (self.output_weight[:, 1:].T.dot(output_delta)) * a * (1.0 - a)
+        _middle_weight = self.middle_weight
+        self.middle_weight -= epsilon * middle_delta.reshape((-1, 1)) * numpy.r_[numpy.array([1]), z]
+
 
         # update hidden_weight
-        hidden_delta = (self.output_weight[:, 1:].T.dot(output_delta)) * z * (1.0 - z)
+        hidden_delta = (self.middle_weight[:, 1:].T.dot(middle_delta)) * z * (1.0 - z)
         _hidden_weight = self.hidden_weight
         self.hidden_weight -= epsilon * hidden_delta.reshape((-1, 1)) * numpy.r_[numpy.array([1]), x]
 
@@ -84,7 +91,7 @@ class Neural:
             x = X[i, :]
             t = T[i, :]
 
-            z, y = self.__forward(x)
+            z, y ,a= self.__forward(x)
             err += (y - t).dot((y - t).reshape((-1, 1))) / 2.0
 
         return err
