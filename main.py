@@ -6,6 +6,8 @@ Created on Wed Apr 15 12:36:03 2020
 """
 
 from neuralnetwork_kai import *
+#from neuralnetwork import *
+
 
 if __name__ == '__main__':
 
