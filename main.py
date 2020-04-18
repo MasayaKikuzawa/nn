@@ -9,6 +9,7 @@ Created on Wed Nov 15 12:36:03 2017
 neuralnetwork：入力層、中間層、出力層の3層のモデル
 neuralnetwork_kai：入力層、中間層、中間層、出力層の4層のモデル
 neuralnetwork_final:中間層の層数を変更できるモデル
+使いたいモデルのコメント文を外してください
 """
 #from neuralnetwork import *
 #from neuralnetwork_kai import *
