@@ -60,8 +60,6 @@ class Neural:
         output_delta = (y - t) * y * (1.0 - y)
         self.output_weight -= epsilon * output_delta.reshape((-1, 1)) * numpy.r_[numpy.array([1]), z]
         
-        print(self.output_weight[:, 1:])
-        
         # update hidden_weight
         hidden_delta = (self.output_weight[:, 1:].T.dot(output_delta)) * z * (1.0 - z)
         self.hidden_weight -= epsilon * hidden_delta.reshape((-1, 1)) * numpy.r_[numpy.array([1]), x]

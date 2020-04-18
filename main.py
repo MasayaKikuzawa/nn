@@ -6,7 +6,7 @@ Created on Wed Nov 15 12:36:03 2017
 """
 
 """
-neuralnetwork：オリジナル、入力層、中間層、出力層の3層のモデル
+neuralnetwork：入力層、中間層、出力層の3層のモデル
 neuralnetwork_kai：入力層、中間層、中間層、出力層の4層のモデル
 neuralnetwork_final:中間層の層数を変更できるモデル
 """
@@ -25,7 +25,7 @@ if __name__ == '__main__':
     #入力データ
     inputdata = numpy.array([[0, 1, 0], [0, 1, 1]])
     #入力ノード数
-    input_size = X.shape[1]
+    input_size = inputdata.shape[1]
     #中間層ノード数
     hidden_size = 4
     #中間層の層数
@@ -45,10 +45,9 @@ if __name__ == '__main__':
     nn = Neural(input_size, hidden_size, output_size,noml)
     #nn.train(X, T, epsilon, epoch)
     nn.train(X, T, epsilon, epoch,noml)
-    nn.error_graph()
 
-    #Y = nn.predict(X)
-    Y = nn.predict(X,noml)
+    #Y = nn.predict(inputdata)
+    Y = nn.predict(inputdata,noml)
     
     endtime = time.time()
     
