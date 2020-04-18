@@ -17,6 +17,8 @@ class Neural:
     def __init__(self, n_input, n_hidden, n_output):
         self.hidden_weight = numpy.random.random_sample((n_hidden, n_input + 1))
         self.output_weight = numpy.random.random_sample((n_output, n_hidden + 1))
+        
+        #print(self.output_weight[:, 1:])
 
 
 # public method
@@ -70,7 +72,9 @@ class Neural:
         output_delta = (y - t) * y * (1.0 - y)
         _output_weight = self.output_weight
         self.output_weight -= epsilon * output_delta.reshape((-1, 1)) * numpy.r_[numpy.array([1]), z]
-
+        
+        print(self.output_weight[:, 1:])
+        
         # update hidden_weight
         hidden_delta = (self.output_weight[:, 1:].T.dot(output_delta)) * z * (1.0 - z)
         _hidden_weight = self.hidden_weight

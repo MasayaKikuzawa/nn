@@ -77,7 +77,6 @@ class Neural:
         _middle_weight = self.middle_weight
         self.middle_weight -= epsilon * middle_delta.reshape((-1, 1)) * numpy.r_[numpy.array([1]), z]
 
-
         # update hidden_weight
         hidden_delta = (self.middle_weight[:, 1:].T.dot(middle_delta)) * z * (1.0 - z)
         _hidden_weight = self.hidden_weight
