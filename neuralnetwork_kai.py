@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Apr 15 12:35:12 2020
+Created on Thu Apr 16 16:35:12 2020
 
 @author: bakan
 """
@@ -8,8 +8,6 @@ Created on Wed Apr 15 12:35:12 2020
 
 import numpy
 import math
-import random
-from matplotlib import pyplot
 
 class Neural:
 
@@ -45,13 +43,6 @@ class Neural:
             
         return (Y)
 
-
-    def error_graph(self):
-        pyplot.ylim(0.0, 2.0)
-        pyplot.plot(numpy.arange(0, self.error.shape[0]), self.error)
-        pyplot.show()
-
-
 # private method
     def __sigmoid(self, arr):
         return numpy.vectorize(lambda x: 1.0 / (1.0 + math.exp(-x)))(arr)
@@ -70,16 +61,13 @@ class Neural:
 
         # update output_weight
         output_delta = (y - t) * y * (1.0 - y)
-        _output_weight = self.output_weight
         self.output_weight -= epsilon * output_delta.reshape((-1, 1)) * numpy.r_[numpy.array([1]), a]
 
         middle_delta = (self.output_weight[:, 1:].T.dot(output_delta)) * a * (1.0 - a)
-        _middle_weight = self.middle_weight
         self.middle_weight -= epsilon * middle_delta.reshape((-1, 1)) * numpy.r_[numpy.array([1]), z]
 
         # update hidden_weight
         hidden_delta = (self.middle_weight[:, 1:].T.dot(middle_delta)) * z * (1.0 - z)
-        _hidden_weight = self.hidden_weight
         self.hidden_weight -= epsilon * hidden_delta.reshape((-1, 1)) * numpy.r_[numpy.array([1]), x]
 
 

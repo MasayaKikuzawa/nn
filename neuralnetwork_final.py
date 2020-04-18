@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Apr 15 12:35:12 2020
+Created on Fri Apr 17 15:35:12 2020
 
 @author: bakan
 """
@@ -8,13 +8,13 @@ Created on Wed Apr 15 12:35:12 2020
 
 import numpy
 import math
-from matplotlib import pyplot
 
 class Neural:
 
-    # constructor
+    # コンストラクタ
     def __init__(self, n_input, n_hidden, n_output,noml):
         
+        #for文で必要な数の中間層を配列で格納
         self.hidden_weight = numpy.random.random_sample((n_hidden, n_input + 1))
         if noml > 2:
             self.middle_weight = []
@@ -54,18 +54,10 @@ class Neural:
             
         return (Y)
 
-
-    def error_graph(self):
-        pyplot.ylim(0.0, 2.0)
-        pyplot.plot(numpy.arange(0, self.error.shape[0]), self.error)
-        pyplot.show()
-
-
-# private method
     def __sigmoid(self, arr):
         return numpy.vectorize(lambda x: 1.0 / (1.0 + math.exp(-x)))(arr)
 
-
+    #中間層が1、2、3以上の時で場合分けしている
     def __forward(self, x,noml):
         
         # z: output in hidden layer, y: output in output layer
@@ -89,6 +81,7 @@ class Neural:
             
         return (z, y, b)
 
+    #配列計算簡略化のため、中間層とシグモイド計算した配列を逆転して計算、これも中間層数1,2,3以上で場合分けしている
     def __update_weight(self, x, t, epsilon,noml):
         z, y, b = self.__forward(x,noml)
         
